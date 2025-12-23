@@ -135,3 +135,13 @@ module "essential_contacts" {
   essential_contacts = var.essential_contacts
   language_tag       = var.language_tag
 }
+
+/******************************************
+  Notification Channels to create if set
+ *****************************************/
+module "notification_channels" {
+  source     = "./modules/notification_channels"
+  
+  project_id = module.project-factory.project_id
+  notification_channels   = var.notification_channels
+}
