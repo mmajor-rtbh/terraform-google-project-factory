@@ -16,7 +16,7 @@
 
 locals {
   email_channels = flatten([
-    for email_config in var.channels.email : [
+    for email_config in var.notification_channels.email : [
       for email_address, types in email_config : {
         key   = email_address
         email = email_address
@@ -26,7 +26,7 @@ locals {
   ])
   
   pubsub_channels = flatten([
-    for pubsub_config in var.channels.pubsub : [
+    for pubsub_config in var.notification_channels.pubsub : [
       for topic_path, types in pubsub_config : {
         key   = topic_path
         topic = topic_path
