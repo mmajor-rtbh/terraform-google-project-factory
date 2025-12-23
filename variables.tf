@@ -377,3 +377,15 @@ variable "deletion_policy" {
   type        = string
   default     = "PREVENT"
 }
+
+variable "notification_channels" {
+  description = "Notification channels configuration"
+  type = object({
+    email  = optional(list(map(list(string))), [])
+    pubsub = optional(list(map(list(string))), [])
+  })
+  default = {
+    email  = []
+    pubsub = []
+  }
+}
