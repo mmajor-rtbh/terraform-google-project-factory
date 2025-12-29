@@ -95,6 +95,16 @@ module "shared_vpc_access" {
 }
 
 /******************************************
+  Notification Channels to create if set
+ *****************************************/
+module "notification_channels" {
+  source = "./modules/notification_channels"
+
+  project_id            = module.project-factory.project_id
+  notification_channels = var.notification_channels
+}
+
+/******************************************
   Billing budget to create if amount is set
  *****************************************/
 module "budget" {
@@ -107,7 +117,7 @@ module "budget" {
   alert_spent_percents             = var.budget_alert_spent_percents
   alert_spend_basis                = var.budget_alert_spend_basis
   alert_pubsub_topic               = var.budget_alert_pubsub_topic
-  monitoring_notification_channels = var.budget_monitoring_notification_channels
+  monitoring_notification_channels = concat(var.budget_monitoring_notification_channels, module.notification_channels.email_channels)
   display_name                     = var.budget_display_name != null ? var.budget_display_name : null
   labels                           = var.budget_labels
   calendar_period                  = var.budget_calendar_period
@@ -134,14 +144,4 @@ module "essential_contacts" {
   project_id         = module.project-factory.project_id
   essential_contacts = var.essential_contacts
   language_tag       = var.language_tag
-}
-
-/******************************************
-  Notification Channels to create if set
- *****************************************/
-module "notification_channels" {
-  source     = "./modules/notification_channels"
-  
-  project_id = module.project-factory.project_id
-  notification_channels   = var.notification_channels
 }
